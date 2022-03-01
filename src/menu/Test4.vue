@@ -3,8 +3,12 @@
     <div class="showCollection">
       <h2 style="color: rgba(0,0,0,0.6)">分类</h2>
       <el-divider></el-divider>
+      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-menu-item index="1">作者</el-menu-item>
+        <el-menu-item index="2">小说</el-menu-item>
+      </el-menu>
       <ul class="showNovel">
-        <li  v-if="lists.type='1'" v-for="item in lists" :key="item">
+        <li v-for="item in lists" :key="item">
           <img :src="item.imageUrl" />
           <span style="font-size: 15px;text-align: left;color: black">{{ item.author }}</span>
           <span style="text-align: right;color: #99a9bf;font-size: 15px">{{item.hot}}</span>
@@ -22,7 +26,8 @@ export default {
   name: "分类",
   data(){
     return{
-      lists:[],
+      activeIndex: '1',
+      lists:[]
     }
   },
   mounted() {
@@ -35,6 +40,9 @@ export default {
           this.lists = resp;
         }
       })
+    },
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
     }
   }
 }

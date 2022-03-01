@@ -50,7 +50,7 @@
           <router-view />
         </el-main>
         <el-main>
-        <div class="homeWelcome" v-if="this.$router.currentRoute.path=='/home'">
+        <div class="homeWelcome" v-if="this.$router.currentRoute.path==='/home'">
           欢迎来到曜杨实时小说网站！
         </div>
       </el-main>
@@ -69,31 +69,32 @@ export default {
       value: [],
       list: [],
       loading: false,
-      states: ["Alabama", "Alaska", "Arizona",
-      "Arkansas", "California", "Colorado",
-      "Connecticut", "Delaware", "Florida",
-      "Georgia", "Hawaii", "Idaho", "Illinois",
-      "Indiana", "Iowa", "Kansas", "Kentucky",
-      "Louisiana", "Maine", "Maryland",
-      "Massachusetts", "Michigan", "Minnesota",
-      "Mississippi", "Missouri", "Montana",
-      "Nebraska", "Nevada", "New Hampshire",
-      "New Jersey", "New Mexico", "New York",
-      "North Carolina", "North Dakota", "Ohio",
-      "Oklahoma", "Oregon", "Pennsylvania",
-      "Rhode Island", "South Carolina",
-      "South Dakota", "Tennessee", "Texas",
-      "Utah", "Vermont", "Virginia",
-      "Washington", "West Virginia", "Wisconsin",
-      "Wyoming"]
+      states: [
+        {
+          count:'',
+          novelPageList:[
+            {
+              id:'',
+              imageUrl:'',
+              name:''
+            }
+          ]
+        }
+      ]
     }
   },
   mounted() {
     this.list = this.states.map(item => {
       return { value: `value:${item}`, label: `label:${item}` };
     });
+    this.Search();
   },
   methods: {
+    Search(){
+      this.states.getRequest('/novel/search').then(resp=>{
+        this.states = resp;
+      })
+    },
     remoteMethod(query) {
       if (query !== '') {
         this.loading = true;
@@ -148,7 +149,6 @@ export default {
 }
 .homeHeader .title{
   font-size: 30px;
-  font-family: 华文楷体;
   color: white;
 }
 .homeHeader .userInfo{
@@ -165,9 +165,9 @@ export default {
 .homeWelcome{
   display: flex;
   font-size: 30px;
-  font-family: 华文楷体;
   color: cornflowerblue;
   padding-top: 50px;
 }
 
 </style>
+

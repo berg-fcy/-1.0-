@@ -1,19 +1,37 @@
 <template>
   <div>
-    <div class="showSort">
       <h2 style="color: rgba(0,0,0,0.6)">待审核</h2>
       <el-divider></el-divider>
-      <ol class="showSortNovel">
-        <li v-for="item in lists" :key="item">
-          <span><img :src="item.imgUrl" />{{item.name}}</span>
-          <span style="font-size: 15px;text-align: left;color: black">作者：xx</span>
-          <span style="text-align: right;color: #99a9bf;font-size: 15px">热度：10</span>
-          <a href="#" target="_blank">
-            <span>{{ item.name }}</span>
-          </a>
-        </li>
-      </ol>
-    </div>
+        <el-table
+            :data="tableData"
+            style="width: 100%">
+          <el-table-column
+              prop="id"
+              label="小说id"
+              width="80">
+          </el-table-column>
+          <el-table-column
+              prop="imageurl"
+              label="小说封面"
+              width="180">
+          </el-table-column>
+          <el-table-column
+              prop="name"
+              label="小说标题"
+              width="180">
+          </el-table-column>
+          <el-table-column label="操作" width="250px">
+            <template slot-scope="scope">
+              <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)">审核通过</el-button>
+              <el-button
+                  size="mini"
+                  type="danger"
+                  @click="handleDelete(scope.$index, scope.row)">审核不通过</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
   </div>
 </template>
 
@@ -23,26 +41,42 @@ export default {
   data(){
     return{
       lists:[],
+      tableData: [{
+        id: '',
+        name: '',
+        imageUrl: ''
+      }]
     }
   },
   mounted() {
-    this.lists = [
-      {
-        imgUrl:
-            'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-        name: '鹿',
-      },
-      {
-        imgUrl:
-            'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-        name: '马',
-      },
-      {
-        imgUrl:
-            'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-        name: '山狮',
-      },
-    ]
+    this.judgeTableData()
+  },
+  methods:{
+    judgeTableData(){
+      this.tableData.getRequest('/admin/').then((resp)=>{
+        this.tableData = resp;
+      })
+    },
+    handleEdit(index, row) {
+      this.tableData.deleteRequest('/admin/').then((resp)=>{
+        if(resp){
+          this.$message({
+            message: '撤回成功！',
+            type: 'warning'
+          })
+        };
+      })
+    },
+    handleDelete(index, row) {
+      this.tableData.deleteRequest('/admin/success').then((resp)=>{
+        if(resp){
+          this.$message({
+            message: '通过成功！',
+            type: 'success'
+          })
+        };
+      })
+    }
   }
 }
 </script>

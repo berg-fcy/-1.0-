@@ -15,6 +15,7 @@
         <el-input type="password" v-model="loginForm.password" auto-complete="false" placeholder="请输入密码">
         </el-input>
       </el-form-item>
+
       <el-form-item prop="code">
         <el-input type="text" v-model="loginForm.code" auto-complete="false" placeholder="点击更换验证码" style="width: 250px;margin-right: 5px">
         </el-input>
@@ -23,6 +24,7 @@
           <identify :identifyCode="identifyCode"></identify>
         </div>
       </el-form-item>
+
       <el-checkbox v-model="checked" class="loginRemember">记住我</el-checkbox>
       <el-button type="primary" style="width: 100%" @click="handleSubmit">登录</el-button>
       <el-link :underline="false" type="primary" class="adminLoginRegister" @click="toLogin">用户登录</el-link>
@@ -31,7 +33,6 @@
 </template>
 <script>
 import identify from "../../components/identify";// 引入子元素
-
 
 export default {
   name: "Login",
@@ -73,7 +74,7 @@ export default {
         this.$refs.loginForm.validate((valid)=>{
           if(valid){
             this.loading = true;
-            this.postRequest('http://120.24.179.229:8080/doc.html#/default/admin-controller/loginUsingPOST',{username:this.loginForm.username,password:this.loginForm.password}).then(resp=>{
+            this.postRequest('/admin/doLogin',{username:this.loginForm.username,password:this.loginForm.password}).then(resp=>{
               if(resp){
                 this.loading = false;
                 //存储用户token
@@ -106,8 +107,12 @@ export default {
         this.identifyCode += data[this.randomNum(0, data.length - 1)]
       }
     }
+  },
+  components: {
+    identify
   }
 };
+
 </script>
 
 <style>

@@ -5,7 +5,7 @@
       <el-divider></el-divider>
       <ol class="showSortNovel">
         <li v-for="item in lists" :key="item">
-         <span><img :src="item.imgUrl" />{{item.description}}</span>
+         <span><img :src="item.imageUrl" />{{item.description}}</span>
           <span style="font-size: 15px;text-align: left;color: black">{{item.author}}</span>
           <span style="text-align: right;color: #99a9bf;font-size: 15px">{{item.hot}}</span>
           <a :href="item.downloadUrl" target="_blank">
@@ -13,6 +13,12 @@
           </a>
         </li>
       </ol>
+      <el-pagination
+          :page-size=Pages.size
+          :pager-count="11"
+          layout="prev, pager, next"
+          :total= Pages.size>
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -23,16 +29,32 @@ export default {
   data() {
     return {
       lists: [],
+      Pages:{
+        count:'',
+        novelPagesList:[{
+          id:'',
+          imageUrl:'',
+          name:''
+        }]
+      }
     }
   },
   mounted() {
     this.initLists();
+    this.initPages();
   },
   methods: {
     initLists() {
       this.getRequest('/novel/top').then(resp => {
         if (resp) {
           this.lists = resp;
+        }
+      })
+    },
+    initPages() {
+      this.getRequest('/novel/').then(resp => {
+        if (resp) {
+          this.Pages = resp;
         }
       })
     }

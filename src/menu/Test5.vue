@@ -7,8 +7,8 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <div>
-
+    <div class="introduce">
+      &nbsp;&nbsp;&nbsp;曜杨实时小说网站成立于2022年，集小说创作，小说阅读功能于一体的创新型小说网，曜杨小说创新性的支持在线用户为自己喜爱的小说创作同人分支，拉近了读者与作者的距离。视觉小说区以其灵活的表现力，开辟了网络小说的新型模式。
     </div>
   </div>
 </template>

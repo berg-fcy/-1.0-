@@ -14,11 +14,9 @@ import {deleteRequest} from "./utils/api";
 
 import axios from 'axios'
 
-let vueResource = require('vue-source');
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
-Vue.prototype.$axios = axios
 
 //插件形式使用请求
 Vue.prototype.postRequest = postRequest;
