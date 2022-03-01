@@ -11,6 +11,8 @@
           <a :href="item.downloadUrl" target="_blank">
             <span>{{ item.name }}</span>
           </a>
+          <el-button type="primary" size="small" @click="addCollection">收藏</el-button>
+
         </li>
       </ol>
       <el-pagination
@@ -28,7 +30,14 @@ export default {
   name: "排行榜",
   data() {
     return {
-      lists: [],
+      lists: [{
+        imageUrl:'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbkimg.cdn.bcebos.com%2Fpic%2F8326cffc1e178a82e6abdd6bfa03738da877e862&refer=http%3A%2F%2Fbkimg.cdn.bcebos.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1648533825&t=8ed51027217e8df1bf780fad7042aa30',
+        description:'样例',
+        author:'佚名',
+        hot:'0',
+        downloadUrl:'/test2',
+        name:'样例'
+      }],
       Pages:{
         count:'',
         novelPagesList:[{
@@ -44,6 +53,16 @@ export default {
     this.initPages();
   },
   methods: {
+    addCollection(id) {
+      this.postRequest('/novel/collection',id).then(resp=>{
+        if(resp){
+          this.$message({
+            message: '收藏成功！',
+            type: 'success'
+          });
+        }
+      })
+    },
     initLists() {
       this.getRequest('/novel/top').then(resp => {
         if (resp) {
